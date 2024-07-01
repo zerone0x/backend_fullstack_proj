@@ -23,7 +23,15 @@ const initPassport = require("./strategies/local-strategy");
 // Attention: notFoundMiddleware should be placed in the front of errorMiddleware
 const notFoundMiddleware = require("./middlewares/not-found");
 const errorMiddleware = require("./middlewares/error-handler");
-app.use(cors());
+const User = require("./models/User");
+const Feeds = require("./models/Feeds");
+const corsOptions = {
+  origin: process.env.FE_ORIGIN,
+  credentials: true,
+  optionsSuccessStatus: 200,
+  allowedHeaders: ["Authorization", "Content-Type"], // Explicitly allow these headers
+};
+app.use(cors(corsOptions));
 
 app.use(
   expressSession({
@@ -31,8 +39,8 @@ app.use(
     cookie: {
       maxAge: 3000,
     },
-    resave: false, // 强制保存session即使它没有变化
-    saveUninitialized: true, // 强制将未初始化的session保存
+    resave: false,
+    saveUninitialized: true,
     cookie: { secure: false },
   }),
 );
@@ -60,6 +68,7 @@ const Port = process.env.PORT || 3007;
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URI);
+    // const result = await User.deleteMany({ email: "soberzml.42@gmail.com" });
     app.listen(Port, console.log(`Server running on port ${Port}`));
   } catch (error) {
     console.error(error);

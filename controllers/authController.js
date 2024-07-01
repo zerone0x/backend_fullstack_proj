@@ -23,11 +23,6 @@ const register = async (req, res) => {
     resUser,
     "Your account registered successfully",
   );
-  if (user) {
-    res.redirect(process.env.FE_URL);
-  } else {
-    res.send(req.user);
-  }
 };
 
 const login = async (req, res) => {
@@ -53,7 +48,7 @@ const login = async (req, res) => {
     res,
     StatusCodes.CREATED,
     resUser,
-    "Your account registered successfully",
+    "Your account logined successfully",
   );
 };
 
@@ -62,7 +57,6 @@ const RedirectGoogle = (req, res) => {
   const tokenUser = createTokenUser(user);
   attachCookiesToResponse({ res, user: tokenUser });
   req.session.user = user;
-  console.log(req.session.user);
   const resUser = { user: user, tokenUser: tokenUser };
   if (user) {
     res.redirect(process.env.FE_URL);

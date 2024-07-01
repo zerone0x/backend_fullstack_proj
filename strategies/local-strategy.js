@@ -28,9 +28,11 @@ passport.use(
           done(null, currUser);
         }
       });
+      const index = profile.displayName.indexOf("(");
+      const username = profile.displayName.slice(0, index).replace(/\s+/g, "");
       User.create({
         googleId: profile.id,
-        name: profile.displayName,
+        name: username,
         email: profile.emails[0].value,
       }).then((user) => {
         done(null, user);
@@ -48,7 +50,6 @@ passport.use(
     },
     (accessToken, refreshToken, profile, done) => {
       // it will execute before redirect
-      console.log(profile);
       User.findOne({ githubId: profile.id }).then((currUser) => {
         if (currUser) {
           done(null, currUser);

@@ -12,11 +12,11 @@ const UserSchema = new mongoose.Schema(
       unique: true,
       trim: true,
       validate: {
-      validator: function(v) {
-        return !/\s/.test(v);
+        validator: function (v) {
+          return !/\s/.test(v);
+        },
+        message: (props) => `${props.value} should not contain any spaces`,
       },
-      message: props => `${props.value} should not contain any spaces` 
-      }
     },
     username: {
       type: String,
